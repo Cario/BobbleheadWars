@@ -1001,6 +1001,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 1953378177}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4096
   moveSpeed: 50
 --- !u!143 &1167615632
 CharacterController:
@@ -1580,6 +1583,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 7f78b096b427d419f9918e4ae4fc4aec, type: 3}
       propertyPath: m_Name
       value: BobbleArena
+      objectReference: {fileID: 0}
+    - target: {fileID: 100078, guid: 7f78b096b427d419f9918e4ae4fc4aec, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7f78b096b427d419f9918e4ae4fc4aec, type: 3}
       propertyPath: m_RootOrder

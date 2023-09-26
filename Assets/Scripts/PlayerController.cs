@@ -42,12 +42,17 @@ public class PlayerController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 1000, layerMask, QueryTriggerInteraction.Ignore))
         {
-            currentLookTarget = hit.point;
+            if (hit.point != currentLookTarget)
+            {
+                currentLookTarget = hit.point;
+            }
+
+            Vector3 targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+            Quaternion rotation = Quaternion.LookRotation(targetPosition - transform.position);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 10.0f);
         }
 
-        Vector3 targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-        Quaternion rotation = Quaternion.LookRotation(targetPosition - transform.position);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 10.0f);
+        
 
         //Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green);
     }

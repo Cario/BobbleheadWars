@@ -16,9 +16,10 @@ public class Projectile : MonoBehaviour
         
     }
 
-    private void OnBecomeInvisible()
+    private void OnBecameInvisible()
     {
         Destroy(gameObject);
+        Debug.Log("Hello");
     }
 
     private void OnCollisionEnter(Collision collision)

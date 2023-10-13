@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip elevatorArrived;
     public AudioClip powerUpPickup;
     public AudioClip powerUpAppear;
+
     public static SoundManager Instance = null; //Creates a static instance
     private AudioSource soundEffectAudio;      //Audio source added to the sound manager used to play sound effects
     // Start is called before the first frame update
@@ -32,7 +33,7 @@ public class SoundManager : MonoBehaviour
         {
             if (source.clip == null)       //Selects the audio source with no sound clip stored in it  to it
             {
-                soundEffectAudio = source;  //Adds this sound clip to this specific Audio Source
+                soundEffectAudio = source;  //Makes this empty audio source the place to store and use audio clips added via computing
             }
         }
     }
@@ -41,5 +42,10 @@ public class SoundManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void PlayOneShot(AudioClip clip)
+    {
+        soundEffectAudio.PlayOneShot(clip);
     }
 }

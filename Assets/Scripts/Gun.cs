@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    private AudioSource audioSource;
+
     public GameObject bulletPrefab;
     public Transform launchPosition;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -35,5 +37,7 @@ public class Gun : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab) as GameObject;
         bullet.transform.position = launchPosition.position;
         bullet.GetComponent<Rigidbody>().velocity = transform.parent.forward * 100;
+
+        audioSource.PlayOneShot(SoundManager.Instance.gunFire);
     }
 }

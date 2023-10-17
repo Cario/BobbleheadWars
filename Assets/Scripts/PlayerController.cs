@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
     private float timeSinceHit = 0;      //the amount of time passed in the grace period
     private int hitNumber = -1;        //The number of times the hero took a hit
 
+    public Rigidbody marineBody;
+    private bool isDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -94,12 +97,28 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    //death todo
+                    Die();
                 }
                 isHit = true;
                 SoundManager.Instance.PlayOneShot(SoundManager.Instance.hurt);
             }
             alien.Die();
         }
+    }
+
+    public void Die()
+    {
+        bodyAnimator.SetBool("IsMoving", false);  //Stops all body animations
+        marineBody.transform.parent = null;  //Set parent to null to remove current gameObject from parent
+        marineBody.isKinematic = false;   //Disabing IsKinematic and enabling Gravity to cause the body
+        marineBody.useGravity = true;     //to drop and roll
+        marineBody.gameObject.GetComponent<CapsuleCollider>().enabled = true; //Collider enabled to allow drop and roll to work
+        
+        marineBody.gameObject.GetComponent<Gun>().enabled = false; //Disabled to prevent gun from being fireable
+        Destroy(head.gameObject.GetComponent<HingeJoint>());
+        head.transform.parent = null;
+        head.useGravity = true;
+        SoundManager.Instance.PlayOneShot(SoundManager.Instance.marineDeath);
+        Destroy(gameObject);
     }
 }

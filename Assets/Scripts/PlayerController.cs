@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Security.Cryptography;
+using System.Security;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,6 +16,14 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
 
     public Animator bodyAnimator;
+
+    public float[] hitForce;
+
+    public float timeBetweenHits = 2.5f; //Grace periods between hits
+    private bool isHit = false;          //Indicates that the hero took a hit
+    private float timeSinceHit = 0;      //the amount of time passed in the grace period
+    private int hitNumber = -1;        //The number of times the hero took a hit
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +35,16 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         characterController.SimpleMove(moveDirection * moveSpeed);
+
+        if (isHit)
+        {
+            timeSinceHit += Time.deltaTime;
+            if (timeSinceHit > timeBetweenHits)
+            {
+                isHit = false;
+                timeSinceHit = 0;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -56,8 +75,31 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 10.0f);
         }
 
-        
-
         //Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Alien alien = other.gameObject.GetComponent<Alien>();
+        if (alien != null) //Checks if the colliding object has an Alien script attacked to it
+        {
+            if (!isHit)  //Checks if the alien and player hasn't been hit before, then officially considers the player hit
+            {
+                hitNumber += 1;
+                CameraShake cameraShake = Camera.main.GetComponent<CameraShake>();
+                if (hitNumber < hitForce.Length)
+                {
+                    cameraShake.intensity = hitForce[hitNumber];
+                    cameraShake.Shake();
+                }
+                else
+                {
+                    //death todo
+                }
+                isHit = true;
+                SoundManager.Instance.PlayOneShot(SoundManager.Instance.hurt);
+            }
+            alien.Die();
+        }
     }
 }

@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
-        Debug.Log("Hello");
+        Debug.Log("Bullet cleaned");
     }
 
     private void OnCollisionEnter(Collision collision)

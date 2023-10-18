@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private int hitNumber = -1;        //The number of times the hero took a hit
 
     public Rigidbody marineBody;
-    private bool isDead = false;
+    //private bool isDead = false;   //Is literally never called. Unnecessary
 
     private DeathParticles deathParticles;
 
